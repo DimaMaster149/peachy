@@ -1,28 +1,65 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <assets-gallery :assets="assets" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import AssetsGallery from './components/AssetsGallery.vue';
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+  components: {
+    AssetsGallery
+  },
+
+  data () {
+    return {
+      assets: [{
+        type: 'video',
+        id: '1UrHwQw5cXPg-ZTE_lt0xepSJP1Em9-_t',
+      }, {
+        type: 'image',
+        id: '1RBQXWmWFC5HMNPaYvq8JveQQMnBT54VL'
+      }, {
+        type: 'video',
+        id: '1UrHwQw5cXPg-ZTE_lt0xepSJP1Em9-_t',
+      }, {
+        type: 'image',
+        id: '1RBQXWmWFC5HMNPaYvq8JveQQMnBT54VL'
+      }, {
+        type: 'video',
+        id: '1UrHwQw5cXPg-ZTE_lt0xepSJP1Em9-_t',
+      }, {
+        type: 'image',
+        id: '1RBQXWmWFC5HMNPaYvq8JveQQMnBT54VL'
+      }, {
+        type: 'video',
+        id: '1UrHwQw5cXPg-ZTE_lt0xepSJP1Em9-_t',
+      }, {
+        type: 'image',
+        id: '1RBQXWmWFC5HMNPaYvq8JveQQMnBT54VL'
+      }, {
+        type: 'video',
+        id: '1UrHwQw5cXPg-ZTE_lt0xepSJP1Em9-_t',
+      }, {
+        type: 'image',
+        id: '1RBQXWmWFC5HMNPaYvq8JveQQMnBT54VL'
+      }, {
+        type: 'video',
+        id: '1UrHwQw5cXPg-ZTE_lt0xepSJP1Em9-_t',
+      }, {
+        type: 'image',
+        id: '1RBQXWmWFC5HMNPaYvq8JveQQMnBT54VL'
+      }, {
+        type: 'video',
+        id: '1UrHwQw5cXPg-ZTE_lt0xepSJP1Em9-_t',
+      }, {
+        type: 'image',
+        id: '1RBQXWmWFC5HMNPaYvq8JveQQMnBT54VL'
+      },],
+    };
+  },
+};
+</script>
