@@ -3,9 +3,6 @@ import ImageGallery from './components/ImageGallery.vue';
 import VideoGallery from './components/VideoGallery.vue';
 import Carousel from './components/Carousel.vue';
 import './assets/main.css';
-import VueLazyLoad from 'vue-lazyload';
-
-Vue.use(VueLazyLoad);
 
 Vue.config.productionTip = false;
 
