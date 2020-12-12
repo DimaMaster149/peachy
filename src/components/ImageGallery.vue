@@ -11,6 +11,7 @@
           :key="index"
           :width="width"
           :height="height"
+          @click="openCarousel(image.id)"
         />
       </template>
     </div>
@@ -19,6 +20,7 @@
 
 <script>
 import BaseImage from './BaseImage';
+import emitter, { SHOW_CAROUSEL } from '../eventBus';
 
 export default {
   name: 'assets-gallery',
@@ -35,7 +37,7 @@ export default {
     };
   },
 
-  created() {
+  created () {
     this.images = window.images;
   },
 
@@ -43,5 +45,11 @@ export default {
     this.width = (this.$refs.assets.clientWidth * 0.33) - 8;
     this.height = this.width / 2 * 3;
   },
-}
+
+  methods: {
+    openCarousel (id) {
+      emitter.emit(SHOW_CAROUSEL, { id, type: 'image' });
+    },
+  },
+};
 </script>

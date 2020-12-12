@@ -1,6 +1,6 @@
 <template>
   <div
-    @click="showGallery"
+    @click="$emit('click')"
     :style="{ 'width': width + 'px', 'height': height + 'px' }"
     class="video-wrapper mb-3"
   >
@@ -42,11 +42,5 @@ export default {
       return this.id;
     },
   },
-
-  methods: {
-    showGallery () {
-      console.log('show gallery')
-    }
-  }
 };
 </script>

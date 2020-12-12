@@ -13,6 +13,7 @@
           :key="index"
           :width="width"
           :height="height"
+          @click="openCarousel(video.id)"
         />
 
         <base-image
@@ -21,6 +22,7 @@
           :key="index"
           :width="width"
           :height="height"
+          @click="openCarousel(video.id)"
         />
       </template>
     </div>
@@ -30,6 +32,7 @@
 <script>
 import BaseVideo from './BaseVideo';
 import BaseImage from './BaseImage';
+import emitter, { SHOW_CAROUSEL } from '../eventBus';
 
 export default {
   name: 'video-gallery',
@@ -86,6 +89,9 @@ export default {
     },
     timeout (ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
+    },
+    openCarousel (id) {
+      emitter.emit(SHOW_CAROUSEL, { id, type: 'video' });
     },
   },
 };
