@@ -1,19 +1,14 @@
 <template>
   <div>
-    <h1>NEW YEAR'S PARTY COLLECTION</h1>
-    <div>
-      Great to share festive NY mood.
-      Shows some dancing, coctails and party vibe.
-      Asian, white and black people represented.
-    </div>
+    {{videos.length}} videos
     <div
       ref="assets"
       class="assets"
     >
-      <template v-for="(asset, index) in assets">
+      <template v-for="(video, index) in videos">
         <base-video
-          v-if="asset.type === 'video'"
-          :id="asset.id"
+          v-if="video.type === 'video'"
+          :id="video.id"
           :index="index"
           :key="index"
           :width="width"
@@ -22,7 +17,7 @@
 
         <base-image
           v-else
-          :id="asset.id"
+          :id="video.id"
           :key="index"
           :width="width"
           :height="height"
@@ -37,27 +32,27 @@ import BaseVideo from './BaseVideo';
 import BaseImage from './BaseImage';
 
 export default {
-  name: 'assets-gallery',
+  name: 'video-gallery',
 
   components: {
     BaseVideo,
     BaseImage
   },
 
-  props: {
-    assets: {
-      type: Array,
-      default: () => []
-    },
-  },
   data () {
     return {
       indexesToPlay: [],
       videoCount: 0,
       width: 100,
-      height: 100
+      height: 100,
+      videos: [],
     };
   },
+
+  created () {
+    this.videos = window.videos;
+  },
+
   async mounted () {
     this.width = (this.$refs.assets.clientWidth * 0.33) - 8;
     this.height = this.width / 2 * 3;
@@ -91,7 +86,7 @@ export default {
     },
     timeout (ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
-    }
-  }
-}
+    },
+  },
+};
 </script>
