@@ -1,10 +1,12 @@
 <template>
   <div>
-
     <div
       v-if="showCarousel"
       class="carousel-container"
+      @keyup.esc="hideCarousel"
     >
+      <div @click="hideCarousel" class="hide-carousel">X</div>
+
       <splide
         :options="options"
         :extensions="extensions"
@@ -123,8 +125,9 @@ export default {
       } else {
         this.options.start = this.images.findIndex(i => i.id == id);
       }
+      // set focus on carousel
     },
-    carouselClosed () {
+    hideCarousel () {
       this.showCarousel = false;
       this.options.start = 0;
     },

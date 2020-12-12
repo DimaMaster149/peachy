@@ -45,6 +45,17 @@
 	width: 100%;
 }
 
-.splide--has-video, .splide__slide--has-video, .splide__list {
+.splide--has-video,
+.splide__slide--has-video,
+.splide__list {
 	width: 100% !important;
+}
+
+.hide-carousel {
+	position: absolute;
+	color: #fff;
+	top: 10px;
+	right: 10px;
+	font-size: 20px;
+	z-index: 10;
 }
