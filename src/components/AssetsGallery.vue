@@ -1,19 +1,34 @@
 <template>
-  <div class="assets">
-    <template v-for="(asset, index) in assets">
-      <base-video
-        v-if="asset.type === 'video'"
-        :id="asset.id"
-        :index="index"
-        :key="index"
-      />
+  <div>
+    <h1>NEW YEAR'S PARTY COLLECTION</h1>
+    <div>
+      Great to share festive NY mood.
+      Shows some dancing, coctails and party vibe.
+      Asian, white and black people represented.
+    </div>
+    <div
+      ref="assets"
+      class="assets"
+    >
+      <template v-for="(asset, index) in assets">
+        <base-video
+          v-if="asset.type === 'video'"
+          :id="asset.id"
+          :index="index"
+          :key="index"
+          :width="width"
+          :height="height"
+        />
 
-      <base-image
-        v-else
-        :id="asset.id"
-        :key="index"
-      />
-    </template>
+        <base-image
+          v-else
+          :id="asset.id"
+          :key="index"
+          :width="width"
+          :height="height"
+        />
+      </template>
+    </div>
   </div>
 </template>
 
@@ -37,16 +52,23 @@ export default {
   },
   data () {
     return {
-      indexesToPlay: [0, 2, 4],
+      indexesToPlay: [],
       videoCount: 0,
+      width: 100,
+      height: 100
     };
   },
   async mounted () {
-    let first = true;
-    document.getElementById(`video-${this.indexesToPlay[0]}`).oncanplay = () => {
-      if (first) {
-        this.playVideo();
-        first = false;
+    this.width = (this.$refs.assets.clientWidth * 0.33) - 8;
+    this.height = this.width / 2 * 3;
+
+    if (this.indexesToPlay && this.indexesToPlay.length > 0) {
+      let first = true;
+      document.getElementById(`video-${this.indexesToPlay[0]}`).oncanplay = () => {
+        if (first) {
+          this.playVideo();
+          first = false;
+        }
       }
     }
   },

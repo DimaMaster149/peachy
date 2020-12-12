@@ -1,18 +1,21 @@
 .assets {
 	display: flex;
 	flex-wrap: wrap;
-}
-
-.image-wrapper,
-.video-wrapper {
-	width: 200px;
-  height: 200px;
-  margin: 10px;
+	justify-content: space-between;
 }
 
 .image,
 .video {
 	width: 100%;
 	height: 100%;
-  object-fit: cover;
+	object-fit: cover;
+	outline: none;
+}
+
+.mb-2 {
+	margin-bottom: 8px;
+}
+
+.mb-3 {
+	margin-bottom: 12px;
 }

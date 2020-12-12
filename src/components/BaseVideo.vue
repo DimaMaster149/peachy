@@ -1,11 +1,12 @@
 <template>
-  <div class="video-wrapper">
+  <div
+    @click="showGallery"
+    :style="{ 'width': width + 'px', 'height': height + 'px' }"
+    class="video-wrapper mb-3"
+  >
     <video
       :id="`video-${index}`"
       class="video"
-      width="320"
-      height="240"
-      controls
     >
       <source
         :src="link"
@@ -28,12 +29,24 @@ export default {
       type: Number,
       required: true,
     },
+    width: {
+      type: [String, Number]
+    },
+    height: {
+      type: [String, Number]
+    },
   },
 
   computed: {
-    link() {
-      return `https://drive.google.com/uc?export=download&id=${this.id}`
+    link () {
+      return this.id;
     },
   },
+
+  methods: {
+    showGallery () {
+      console.log('show gallery')
+    }
+  }
 };
 </script>
