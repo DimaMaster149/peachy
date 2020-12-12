@@ -13,6 +13,7 @@
         <template v-for="(slide, index) in medias">
           <splide-slide
             v-if="type == 'video'"
+            :class="`video-${index}`"
             :key="index"
             :data-splide-html-video="slide.id"
           >
@@ -73,8 +74,15 @@ export default {
         start: 0, // start index
         video: {
           autoplay: true,
+          loop: true,
           mute: true,
           hideControls: true,
+          playerOptions: {
+            htmlVideo: {
+              playsinline: true,
+              preload: 'auto',
+            },
+          },
           // disableOverlayUI: true
         },
       },
@@ -110,12 +118,15 @@ export default {
     openCarousel ({ id, type }) {
       this.type = type;
       this.showCarousel = true;
-      this.startMediaIndex = 0;
-      console.log({ id, type }, 'CAROUSEL OPENED');
+      if (type == 'video') {
+        this.options.start = this.videos.findIndex(v => v.id == id);
+      } else {
+        this.options.start = this.images.findIndex(i => i.id == id);
+      }
     },
     carouselClosed () {
       this.showCarousel = false;
-      this.startMediaIndex = 0;
+      this.options.start = 0;
     },
   },
 };
