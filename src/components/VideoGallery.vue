@@ -14,6 +14,7 @@
           :width="width"
           :height="height"
           @click="openCarousel(video.galleryId)"
+          @player-ready="playerReady"
         />
 
         <base-image
@@ -30,7 +31,7 @@
 </template>
 
 <script>
-import BaseVideo from './BaseVideo';
+const BaseVideo = () => import('./BaseVideo');
 import BaseImage from './BaseImage';
 import emitter, { SHOW_CAROUSEL } from '../eventBus';
 
@@ -61,22 +62,26 @@ export default {
   async mounted () {
     this.width = (this.$refs.assets.clientWidth * 0.33) - 8;
     this.height = this.width / 2 * 3;
-
-    if (this.indexesToPlay && this.indexesToPlay.length > 0) {
-      let first = true;
-      document.getElementById(`video-${this.indexesToPlay[0]}`).oncanplay = () => {
-        if (first) {
-          this.playVideo();
-          first = false;
-        }
-      }
-    }
   },
 
   methods: {
+    playerReady () {
+      if (this.indexesToPlay && this.indexesToPlay.length > 0) {
+        let first = true;
+        const video = document.getElementById(`video-${this.indexesToPlay[0]}_html5_api`);
+        if (video) {
+          video.oncanplay = () => {
+            if (first) {
+              this.playVideo();
+              first = false;
+            }
+          }
+        }
+      }
+    },
     playVideo () {
       const index = this.indexesToPlay[this.videoCount];
-      const video = document.getElementById(`video-${index}`);
+      const video = document.getElementById(`video-${index}_html5_api`);
       this.videoCount++;
       if (video.play) {
         video.play()
