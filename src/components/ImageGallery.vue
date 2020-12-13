@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     {{images.length}} photos
     <div
       ref="assets"
@@ -7,11 +7,11 @@
     >
       <template v-for="(image, index) in images">
         <base-image
-          :id="image.id"
+          :id="image.galleryId"
           :key="index"
           :width="width"
           :height="height"
-          @click="openCarousel(image.id)"
+          @click="openCarousel(image.galleryId)"
         />
       </template>
     </div>
@@ -47,8 +47,8 @@ export default {
   },
 
   methods: {
-    openCarousel (id) {
-      emitter.emit(SHOW_CAROUSEL, { id, type: 'image' });
+    openCarousel (galleryId) {
+      emitter.emit(SHOW_CAROUSEL, { galleryId, type: 'image' });
     },
   },
 };

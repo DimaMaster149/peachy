@@ -39,10 +39,12 @@
 	-ms-flex-align: center;
 	-webkit-box-align: center;
 	-ms-flex-pack: center;
+	outline: none;
 }
 
 .carousel-image {
 	width: 100%;
+	outline: none;
 }
 
 .splide--has-video,
@@ -58,4 +60,26 @@
 	right: 10px;
 	font-size: 20px;
 	z-index: 10;
+}
+
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
 }

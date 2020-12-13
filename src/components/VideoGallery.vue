@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     {{videos.length}} videos
     <div
       ref="assets"
@@ -8,21 +8,21 @@
       <template v-for="(video, index) in videos">
         <base-video
           v-if="video.type === 'video'"
-          :id="video.id"
+          :id="video.galleryId"
           :index="index"
           :key="index"
           :width="width"
           :height="height"
-          @click="openCarousel(video.id)"
+          @click="openCarousel(video.galleryId)"
         />
 
         <base-image
           v-else
-          :id="video.id"
+          :id="video.galleryId"
           :key="index"
           :width="width"
           :height="height"
-          @click="openCarousel(video.id)"
+          @click="openCarousel(video.galleryId)"
         />
       </template>
     </div>
@@ -54,6 +54,8 @@ export default {
 
   created () {
     this.videos = window.videos;
+    this.indexesToPlay = window.videosToPlay.map(item => item - 1);
+    this.timeToPlay = window.timeToPlay || 3000;
   },
 
   async mounted () {
@@ -84,14 +86,14 @@ export default {
           if (this.indexesToPlay.length > this.videoCount) {
             this.playVideo();
           }
-        }, 3000)
+        }, this.timeToPlay)
       }
     },
     timeout (ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     },
-    openCarousel (id) {
-      emitter.emit(SHOW_CAROUSEL, { id, type: 'video' });
+    openCarousel (galleryId) {
+      emitter.emit(SHOW_CAROUSEL, { galleryId, type: 'video' });
     },
   },
 };

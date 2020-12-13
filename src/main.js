@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import ImageGallery from './components/ImageGallery.vue';
 import VideoGallery from './components/VideoGallery.vue';
-import Carousel from './components/Carousel.vue';
+import CarouselContainer from './components/CarouselContainer.vue';
 import './assets/main.css';
 
 Vue.config.productionTip = false;
@@ -16,6 +16,6 @@ window.addEventListener('load', function() {
 	}).$mount('#video-gallery');
 
 	new Vue({
-		render: (h) => h(Carousel)
+		render: (h) => h(CarouselContainer)
 	}).$mount('#carousel');
 });

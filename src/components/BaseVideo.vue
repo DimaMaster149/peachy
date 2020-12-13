@@ -7,6 +7,7 @@
     <video
       :id="`video-${index}`"
       class="video"
+      muted
     >
       <source
         :src="link"
