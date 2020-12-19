@@ -11,16 +11,6 @@
       class="video video-js"
     ></video>
 
-    <!-- <video
-      :id="`video-${index}`"
-      class="video"
-      muted
-    >
-      <source
-        :src="link"
-        type='video/mp4'
-      >
-    </video> -->
   </div>
 </template>
 
@@ -29,9 +19,11 @@ export default {
   name: 'base-video',
 
   props: {
-    id: {
+    idmp4: {
       type: String,
-      required: true,
+    },
+    idwebm: {
+      type: String,
     },
     index: {
       type: Number,
@@ -51,20 +43,25 @@ export default {
       videoOptions: {
         muted: true,
         autoplay: false,
-        sources: [
-          {
-            src: this.id,
-            type: "video/mp4"
-          }
-        ]
+        sources: []
       },
     };
   },
 
-  computed: {
-    link () {
-      return this.id;
-    },
+  created () {
+    if (this.idmp4) {
+      this.videoOptions.sources.push({
+        src: this.idmp4,
+        type: "video/mp4"
+      });
+    }
+
+    if (this.idwebm) {
+      this.videoOptions.sources.push({
+        src: this.idwebm,
+        type: "video/webm"
+      })
+    }
   },
 
   mounted () {

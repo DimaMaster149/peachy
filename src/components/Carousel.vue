@@ -1,16 +1,22 @@
 <template>
   <splide
     :options="options"
-    :extensions="extensions"
     :slides="medias"
+    @splide:visible="slideVisible"
   >
     <template v-for="(slide, index) in medias">
       <splide-slide
         v-if="type == 'video'"
-        :class="`video-${index}`"
         :key="index"
-        :data-splide-html-video="slide.carouselId"
       >
+        <video
+          class="video"
+          muted="true"
+          loop="true"
+          playsinline
+          :class="`video-${index}`"
+          :src="slide.carouselIdmp4"
+        ></video>
       </splide-slide>
 
       <splide-slide
@@ -29,8 +35,6 @@
 
 <script>
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
-
-import Video from '@splidejs/splide-extension-video';
 
 export default {
   name: 'carousel',
@@ -66,23 +70,20 @@ export default {
         perPage: 1,
         perMove: 1,
         start: 0, // start index
-        video: {
-          autoplay: true,
-          loop: true,
-          mute: true,
-          hideControls: true,
-          playerOptions: {
-            htmlVideo: {
-              playsinline: true,
-              preload: 'auto',
-            },
-          },
-          // disableOverlayUI: true
-        },
+        // video: {
+        //   autoplay: true,
+        //   loop: true,
+        //   mute: true,
+        //   hideControls: true,
+        //   playerOptions: {
+        //     htmlVideo: {
+        //       playsinline: true,
+        //       preload: 'auto',
+        //     },
+        //   },
+        // },
       },
-      extensions: {
-        Video,
-      },
+      loadedVideos: [],
     };
   },
 
@@ -99,5 +100,43 @@ export default {
     this.options.height = window.innerHeight;
     this.options.start = this.startIndex;
   },
+
+  methods: {
+    slideVisible (slide) {
+      const { index } = slide
+      const currentVideoSelector = `.video-${index}`
+      const currentVideo = document.querySelector(currentVideoSelector);
+      // if (!currentVideo.oncanplay) {
+      //   currentVideo.oncanplay = () => {
+      currentVideo.play()
+      //   }
+      // }
+
+      const prevIndex = slide.Components.Controller.prevIndex;
+      const prevVideoSelector = `.video-${prevIndex}`;
+      const prevVideo = document.querySelector(prevVideoSelector);
+
+      if (!prevVideo.paused) {
+        prevVideo.pause();
+        prevVideo.currentTime = 0;
+      }
+
+      this.loadVideo(index);
+    },
+    loadVideo (index) {
+      if (!this.loadedVideos.includes(`.video-${index}`)) {
+        this.loadedVideos.push(`.video-${index}`)
+      }
+
+      if (this.type == 'video' && !this.loadedVideos.includes(`.video-${index + 1}`)) {
+        const selector = `.video-${index + 1}`;
+        const nextVideo = document.querySelector(selector);
+        if (nextVideo) {
+          this.loadedVideos.push(selector)
+          nextVideo.load();
+        }
+      }
+    }
+  }
 };
 </script>

@@ -8,12 +8,13 @@
       <template v-for="(video, index) in videos">
         <base-video
           v-if="video.type === 'video'"
-          :id="video.galleryId"
+          :idmp4="video.galleryIdmp4"
+          :idwebm="video.galleryIdwebm"
           :index="index"
           :key="index"
           :width="width"
           :height="height"
-          @click="openCarousel(video.galleryId)"
+          @click="openCarousel(index)"
           @player-ready="playerReady"
         />
 
@@ -23,7 +24,7 @@
           :key="index"
           :width="width"
           :height="height"
-          @click="openCarousel(video.galleryId)"
+          @click="openCarousel(index)"
         />
       </template>
     </div>
@@ -50,6 +51,7 @@ export default {
       width: 100,
       height: 100,
       videos: [],
+      firstVideoPlayed: false,
     };
   },
 
@@ -67,13 +69,12 @@ export default {
   methods: {
     playerReady () {
       if (this.indexesToPlay && this.indexesToPlay.length > 0) {
-        let first = true;
         const video = document.getElementById(`video-${this.indexesToPlay[0]}_html5_api`);
         if (video) {
           video.oncanplay = () => {
-            if (first) {
+            if (!this.firstVideoPlayed) {
               this.playVideo();
-              first = false;
+              this.firstVideoPlayed = true;
             }
           }
         }
@@ -85,20 +86,21 @@ export default {
       this.videoCount++;
       if (video.play) {
         video.play()
+        
         setTimeout(() => {
           video.pause();
           video.currentTime = 0;
           if (this.indexesToPlay.length > this.videoCount) {
             this.playVideo();
           }
-        }, this.timeToPlay)
+        }, 2500)
       }
     },
     timeout (ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     },
-    openCarousel (galleryId) {
-      emitter.emit(SHOW_CAROUSEL, { galleryId, type: 'video' });
+    openCarousel (index) {
+      emitter.emit(SHOW_CAROUSEL, { index, type: 'video' });
     },
   },
 };

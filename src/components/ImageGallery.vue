@@ -11,7 +11,7 @@
           :key="index"
           :width="width"
           :height="height"
-          @click="openCarousel(image.galleryId)"
+          @click="openCarousel(index)"
         />
       </template>
     </div>
@@ -47,8 +47,8 @@ export default {
   },
 
   methods: {
-    openCarousel (galleryId) {
-      emitter.emit(SHOW_CAROUSEL, { galleryId, type: 'image' });
+    openCarousel (index) {
+      emitter.emit(SHOW_CAROUSEL, { index, type: 'image' });
     },
   },
 };
