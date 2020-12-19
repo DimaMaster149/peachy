@@ -4,7 +4,6 @@
     :slides="medias"
     :extensions="extensions"
     @splide:visible="slideVisible"
-    class="splide-parent"
   >
     <template v-for="(slide, index) in medias">
       <splide-slide
@@ -12,18 +11,15 @@
         :key="index"
         class="splide__slide--has-video"
       >
-        <div class="splide__video">
-          <div>
-            <video
-              class="video"
-              muted="true"
-              loop="true"
-              playsinline
-              :class="`video-${index}`"
-              :src="slide.carouselIdmp4"
-            ></video>
-          </div>
-        </div>
+        <video
+          v-if="indexesToShow.includes(index)"
+          class="video"
+          muted="true"
+          loop="true"
+          playsinline
+          :class="`video-${index}`"
+          :src="slide.carouselIdmp4"
+        ></video>
       </splide-slide>
 
       <splide-slide
@@ -92,10 +88,21 @@ export default {
         },
       },
       loadedVideos: [],
+      currentIndex: 0,
       extensions: {
         // Video
       }
     };
+  },
+
+  computed: {
+    indexesToShow () {
+      const nextIndex = this.currentIndex + 2 > this.medias.length ? 0 : this.currentIndex + 1;
+      const prevIndex = this.currentIndex - 1 < 0 ? this.medias.length - 1 : this.currentIndex - 1;
+      const indexes = [prevIndex, this.currentIndex, nextIndex];
+      console.log(indexes)
+      return indexes;
+    },
   },
 
   watch: {
@@ -115,39 +122,37 @@ export default {
   methods: {
     slideVisible (slide) {
       const { index } = slide
+      this.currentIndex = index;
       const currentVideoSelector = `.video-${index}`
       const currentVideo = document.querySelector(currentVideoSelector);
-      // if (!currentVideo.oncanplay) {
-      //   currentVideo.oncanplay = () => {
-      currentVideo.play()
-      //   }
-      // }
+      if (currentVideo) {
+        currentVideo.play()
+      }
 
       const prevIndex = slide.Components.Controller.prevIndex;
       const prevVideoSelector = `.video-${prevIndex}`;
       const prevVideo = document.querySelector(prevVideoSelector);
 
-      if (!prevVideo.paused) {
+      if (prevVideo && !prevVideo.paused) {
         prevVideo.pause();
         prevVideo.currentTime = 0;
       }
-
-      this.loadVideo(index);
+      // this.loadVideo(index);
     },
-    loadVideo (index) {
-      if (!this.loadedVideos.includes(`.video-${index}`)) {
-        this.loadedVideos.push(`.video-${index}`)
-      }
+    // loadVideo (index) {
+    //   if (!this.loadedVideos.includes(`.video-${index}`)) {
+    //     this.loadedVideos.push(`.video-${index}`)
+    //   }
 
-      if (this.type == 'video' && !this.loadedVideos.includes(`.video-${index + 1}`)) {
-        const selector = `.video-${index + 1}`;
-        const nextVideo = document.querySelector(selector);
-        if (nextVideo) {
-          this.loadedVideos.push(selector)
-          nextVideo.load();
-        }
-      }
-    }
+    //   if (this.type == 'video' && !this.loadedVideos.includes(`.video-${index + 1}`)) {
+    //     const selector = `.video-${index + 1}`;
+    //     const nextVideo = document.querySelector(selector);
+    //     if (nextVideo) {
+    //       this.loadedVideos.push(selector)
+    //       nextVideo.load();
+    //     }
+    //   }
+    // },
   }
 };
 </script>
