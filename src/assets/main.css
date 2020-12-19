@@ -51,7 +51,8 @@
 
 .splide--has-video,
 .splide__slide--has-video,
-.splide__list {
+.splide__list,
+.splide-parent {
 	width: 100% !important;
 }
 

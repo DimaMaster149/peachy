@@ -2,21 +2,28 @@
   <splide
     :options="options"
     :slides="medias"
+    :extensions="extensions"
     @splide:visible="slideVisible"
+    class="splide-parent"
   >
     <template v-for="(slide, index) in medias">
       <splide-slide
         v-if="type == 'video'"
         :key="index"
+        class="splide__slide--has-video"
       >
-        <video
-          class="video"
-          muted="true"
-          loop="true"
-          playsinline
-          :class="`video-${index}`"
-          :src="slide.carouselIdmp4"
-        ></video>
+        <div class="splide__video">
+          <div>
+            <video
+              class="video"
+              muted="true"
+              loop="true"
+              playsinline
+              :class="`video-${index}`"
+              :src="slide.carouselIdmp4"
+            ></video>
+          </div>
+        </div>
       </splide-slide>
 
       <splide-slide
@@ -35,6 +42,7 @@
 
 <script>
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
+// import Video from '@splidejs/splide-extension-video';
 
 export default {
   name: 'carousel',
@@ -70,20 +78,23 @@ export default {
         perPage: 1,
         perMove: 1,
         start: 0, // start index
-        // video: {
-        //   autoplay: true,
-        //   loop: true,
-        //   mute: true,
-        //   hideControls: true,
-        //   playerOptions: {
-        //     htmlVideo: {
-        //       playsinline: true,
-        //       preload: 'auto',
-        //     },
-        //   },
-        // },
+        video: {
+          autoplay: true,
+          loop: true,
+          mute: true,
+          hideControls: true,
+          playerOptions: {
+            htmlVideo: {
+              playsinline: true,
+              preload: 'auto',
+            },
+          },
+        },
       },
       loadedVideos: [],
+      extensions: {
+        // Video
+      }
     };
   },
 
