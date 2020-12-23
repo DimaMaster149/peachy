@@ -98,8 +98,8 @@ export default {
   computed: {
     indexesToShow () {
       const nextIndex = this.currentIndex + 2 > this.medias.length ? 0 : this.currentIndex + 1;
-      // const prevIndex = this.currentIndex - 1 < 0 ? this.medias.length - 1 : this.currentIndex - 1;
-      const indexes = [this.currentIndex, nextIndex];
+      const prevIndex = this.currentIndex - 1 < 0 ? this.medias.length - 1 : this.currentIndex - 1;
+      const indexes = [prevIndex, this.currentIndex, nextIndex];
       return indexes;
     },
   },
