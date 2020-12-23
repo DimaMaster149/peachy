@@ -65,7 +65,7 @@ export default {
       width: 0,
       height: 0,
       options: {
-        type: 'loop',
+        type: 'slide',
         lazyLoad: 'nearby',
         rewind: true,
         gap: '1rem',

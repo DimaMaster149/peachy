@@ -57,6 +57,16 @@
 	width: 100% !important;
 }
 
+/* .splide__slide .image,
+.video,
+.video video {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	outline: none;
+	background: none;
+} */
+
 .hide-carousel {
 	position: absolute;
 	color: #fff;

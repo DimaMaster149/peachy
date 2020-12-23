@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    {{images.length}} photos
     <div
       ref="assets"
       class="assets"

@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    {{videos.length}} videos
     <div
       ref="assets"
       class="assets"
@@ -86,7 +85,7 @@ export default {
       this.videoCount++;
       if (video.play) {
         video.play()
-        
+
         setTimeout(() => {
           video.pause();
           video.currentTime = 0;
