@@ -79,14 +79,10 @@ export default {
   },
 
   methods: {
-    openCarousel ({ galleryId, type }) {
+    openCarousel ({ index, type }) {
       this.type = type;
       this.showCarousel = true;
-      if (type == 'video') {
-        this.startIndex = this.videos.findIndex(v => v.galleryId == galleryId);
-      } else {
-        this.startIndex = this.images.findIndex(i => i.galleryId == galleryId);
-      }
+      this.startIndex = index;
 
       this.$nextTick(() => {
         this.$refs.carouselContainer.focus()

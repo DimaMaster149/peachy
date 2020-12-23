@@ -4,16 +4,13 @@
     :style="{ 'width': width + 'px', 'height': height + 'px' }"
     class="video-wrapper mb-3"
   >
+
     <video
       :id="`video-${index}`"
-      class="video"
-      muted
-    >
-      <source
-        :src="link"
-        type='video/mp4'
-      >
-    </video>
+      ref="videoPlayer"
+      class="video video-js"
+    ></video>
+
   </div>
 </template>
 
@@ -22,9 +19,11 @@ export default {
   name: 'base-video',
 
   props: {
-    id: {
+    idmp4: {
       type: String,
-      required: true,
+    },
+    idwebm: {
+      type: String,
     },
     index: {
       type: Number,
@@ -38,10 +37,43 @@ export default {
     },
   },
 
-  computed: {
-    link () {
-      return this.id;
-    },
+  data () {
+    return {
+      player: null,
+      videoOptions: {
+        muted: true,
+        autoplay: false,
+        sources: []
+      },
+    };
+  },
+
+  created () {
+    if (this.idmp4) {
+      this.videoOptions.sources.push({
+        src: this.idmp4,
+        type: "video/mp4"
+      });
+    }
+
+    if (this.idwebm) {
+      this.videoOptions.sources.push({
+        src: this.idwebm,
+        type: "video/webm"
+      })
+    }
+  },
+
+  mounted () {
+    const videojs = window.videojs;
+    this.player = videojs(this.$refs.videoPlayer, this.videoOptions, () => {
+      this.$emit('player-ready')
+    })
+  },
+  beforeDestroy () {
+    if (this.player) {
+      this.player.dispose()
+    }
   },
 };
 </script>

@@ -1,16 +1,25 @@
 <template>
   <splide
     :options="options"
-    :extensions="extensions"
     :slides="medias"
+    :extensions="extensions"
+    @splide:visible="slideVisible"
   >
     <template v-for="(slide, index) in medias">
       <splide-slide
         v-if="type == 'video'"
-        :class="`video-${index}`"
         :key="index"
-        :data-splide-html-video="slide.carouselId"
+        class="splide__slide--has-video"
       >
+        <video
+          v-if="indexesToShow.includes(index)"
+          class="video"
+          muted="true"
+          loop="true"
+          playsinline
+          :class="`video-${index}`"
+          :src="slide.carouselIdmp4"
+        ></video>
       </splide-slide>
 
       <splide-slide
@@ -29,8 +38,7 @@
 
 <script>
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
-
-import Video from '@splidejs/splide-extension-video';
+// import Video from '@splidejs/splide-extension-video';
 
 export default {
   name: 'carousel',
@@ -57,7 +65,7 @@ export default {
       width: 0,
       height: 0,
       options: {
-        type: 'loop',
+        type: 'slide',
         lazyLoad: 'nearby',
         rewind: true,
         gap: '1rem',
@@ -77,13 +85,23 @@ export default {
               preload: 'auto',
             },
           },
-          // disableOverlayUI: true
         },
       },
+      loadedVideos: [],
+      currentIndex: 0,
       extensions: {
-        Video,
-      },
+        // Video
+      }
     };
+  },
+
+  computed: {
+    indexesToShow () {
+      const nextIndex = this.currentIndex + 2 > this.medias.length ? 0 : this.currentIndex + 1;
+      // const prevIndex = this.currentIndex - 1 < 0 ? this.medias.length - 1 : this.currentIndex - 1;
+      const indexes = [this.currentIndex, nextIndex];
+      return indexes;
+    },
   },
 
   watch: {
@@ -99,5 +117,26 @@ export default {
     this.options.height = window.innerHeight;
     this.options.start = this.startIndex;
   },
+
+  methods: {
+    slideVisible (slide) {
+      const { index } = slide
+      this.currentIndex = index;
+      const currentVideoSelector = `.video-${index}`
+      const currentVideo = document.querySelector(currentVideoSelector);
+      if (currentVideo) {
+        currentVideo.play()
+      }
+
+      const prevIndex = slide.Components.Controller.prevIndex;
+      const prevVideoSelector = `.video-${prevIndex}`;
+      const prevVideo = document.querySelector(prevVideoSelector);
+
+      if (prevVideo && !prevVideo.paused) {
+        prevVideo.pause();
+        prevVideo.currentTime = 0;
+      }
+    },
+  }
 };
 </script>

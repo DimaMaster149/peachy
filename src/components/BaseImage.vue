@@ -6,7 +6,7 @@
   >
     <img
       class="image"
-      :src="link"
+      v-lazy="link"
     >
   </div>
 </template>
