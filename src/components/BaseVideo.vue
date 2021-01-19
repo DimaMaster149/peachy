@@ -68,7 +68,10 @@ export default {
     const videojs = window.videojs;
     this.player = videojs(this.$refs.videoPlayer, this.videoOptions, () => {
       this.$emit('player-ready')
-    })
+    });
+    this.player.on('touchstart', () => {
+      this.$emit('click')
+    });
   },
   beforeDestroy () {
     if (this.player) {

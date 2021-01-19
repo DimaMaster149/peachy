@@ -58,6 +58,7 @@ export default {
       unbind: null,
       showCarousel: false,
       startIndex: 0,
+      type: '',
     };
   },
 
