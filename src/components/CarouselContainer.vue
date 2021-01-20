@@ -1,14 +1,14 @@
 <template>
   <div>
     <div
-      v-if="showCarousel"
+      v-show="showCarousel"
       class="carousel-container"
       tabindex="0"
       ref="carouselContainer"
       @keyup.esc="hideCarousel"
     >
       <div
-        v-if="showCarousel"
+        v-show="showCarousel"
         @click="hideCarousel"
         class="hide-carousel"
       ><svg
@@ -30,10 +30,21 @@
         </svg></div>
 
       <carousel
-        v-if="showCarousel"
-        :medias="medias"
+        v-show="showCarousel && type == 'video'"
+        :medias="videos"
         :startIndex="startIndex"
-        :type="type"
+        type="video"
+        :toStartFirstItem="toStartFirstVideo"
+        @first-item-started="toStartFirstVideo = false"
+      />
+
+      <carousel
+        v-show="showCarousel && type == 'image'"
+        :medias="images"
+        :startIndex="startIndex"
+        type="image"
+        :toStartFirstItem="toStartFirstImage"
+        @first-item-started="toStartFirstImage = false"
       />
     </div>
   </div>
@@ -59,15 +70,19 @@ export default {
       showCarousel: false,
       startIndex: 0,
       type: '',
+      toStartFirstVideo: false,
+      toStartFirstImage: false,
+      images: [],
+      videos: [],
     };
   },
 
-  computed: {
-    medias () {
-      const medias = this.type == 'video' ? this.videos : this.images;
-      return medias;
-    }
-  },
+  // computed: {
+  //   medias () {
+  //     const medias = this.type == 'video' ? this.videos : this.images;
+  //     return medias;
+  //   }
+  // },
 
   created () {
     this.images = window.images;
@@ -82,11 +97,12 @@ export default {
   methods: {
     openCarousel ({ index, type }) {
       this.type = type;
-      this.showCarousel = true;
       this.startIndex = index;
 
       this.$nextTick(() => {
-        this.$refs.carouselContainer.focus()
+        this.$refs.carouselContainer.focus();
+        this.toStartFirstVideo = true;
+        this.showCarousel = true;
       });
     },
     hideCarousel () {

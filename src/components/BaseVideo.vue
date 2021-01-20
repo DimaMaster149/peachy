@@ -5,11 +5,33 @@
     class="video-wrapper mb-3"
   >
 
-    <video
+    <!-- <video
       :id="`video-${index}`"
       ref="videoPlayer"
       class="video video-js"
-    ></video>
+    ></video> -->
+    <video
+      :id="`video-${index}`"
+      width="320"
+      height="240"
+      class="video"
+      muted="true"
+      loop="false"
+      playsinline
+      ref="videoPlayer"
+    >
+      <source
+        v-if="idmp4"
+        :src="idmp4"
+        type="video/mp4"
+      >
+      <source
+        v-if="idwebm"
+        :src="idwebm"
+        type="video/ogg"
+      >
+      Your browser does not support the video tag.
+    </video>
 
   </div>
 </template>
@@ -40,42 +62,13 @@ export default {
   data () {
     return {
       player: null,
-      videoOptions: {
-        muted: true,
-        autoplay: false,
-        sources: []
-      },
     };
   },
 
-  created () {
-    if (this.idmp4) {
-      this.videoOptions.sources.push({
-        src: this.idmp4,
-        type: "video/mp4"
-      });
-    }
-
-    if (this.idwebm) {
-      this.videoOptions.sources.push({
-        src: this.idwebm,
-        type: "video/webm"
-      })
-    }
-  },
-
   mounted () {
-    const videojs = window.videojs;
-    this.player = videojs(this.$refs.videoPlayer, this.videoOptions, () => {
-      this.$emit('player-ready')
-    });
-    this.player.on('touchstart', () => {
-      this.$emit('click')
-    });
-  },
-  beforeDestroy () {
-    if (this.player) {
-      this.player.dispose()
+    const videoEl = this.$refs.videoPlayer;
+    if (videoEl) {
+      this.$emit('player-ready');
     }
   },
 };

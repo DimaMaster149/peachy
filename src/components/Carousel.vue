@@ -4,6 +4,7 @@
     :slides="medias"
     :extensions="extensions"
     @splide:visible="slideVisible"
+    ref="splide"
   >
     <template v-for="(slide, index) in medias">
       <splide-slide
@@ -12,7 +13,6 @@
         class="splide__slide--has-video"
       >
         <video
-          v-if="indexesToShow.includes(index)"
           class="video"
           muted="true"
           loop="true"
@@ -58,6 +58,9 @@ export default {
     startIndex: {
       type: Number,
     },
+    toStartFirstItem: {
+      type: Boolean,
+    }
   },
 
   data () {
@@ -108,6 +111,19 @@ export default {
     startIndex (startIndex) {
       this.options.start = startIndex;
     },
+    toStartFirstItem (value) {
+      if (value) {
+        this.$refs.splide.go(this.startIndex, false);
+        if (this.type == 'video') {
+          const currentVideoSelector = `.video-${this.startIndex}`
+          const currentVideo = document.querySelector(currentVideoSelector);
+          if (currentVideo && currentVideo.play) {
+            currentVideo.play()
+          }
+        }
+        this.$emit('first-item-started');
+      }
+    }
   },
 
   created () {
@@ -124,7 +140,7 @@ export default {
       this.currentIndex = index;
       const currentVideoSelector = `.video-${index}`
       const currentVideo = document.querySelector(currentVideoSelector);
-      if (currentVideo) {
+      if (currentVideo && currentVideo.play) {
         currentVideo.play()
       }
 
@@ -137,6 +153,6 @@ export default {
         prevVideo.currentTime = 0;
       }
     },
-  }
+  },
 };
 </script>

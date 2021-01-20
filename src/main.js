@@ -17,18 +17,18 @@ Vue.config.productionTip = false;
 
 window.addEventListener('load', function() {
 	new Vue({
-		render: (h) => h(VideoGallery)
+		render: h => h(VideoGallery)
 	}).$mount('#video-gallery');
 
 	setTimeout(() => {
 		new Vue({
-			render: (h) => h(ImageGallery)
+			render: h => h(ImageGallery)
 		}).$mount('#image-gallery');
 	}, 300);
 
 	setTimeout(() => {
 		new Vue({
-			render: (h) => h(CarouselContainer)
+			render: h => h(CarouselContainer)
 		}).$mount('#carousel');
-	}, 500);
+	}, 1000);
 });
