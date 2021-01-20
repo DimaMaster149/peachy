@@ -1,15 +1,8 @@
 <template>
   <div
-    @click="$emit('click')"
     :style="{ 'width': width + 'px', 'height': height + 'px' }"
     class="video-wrapper mb-3"
   >
-
-    <!-- <video
-      :id="`video-${index}`"
-      ref="videoPlayer"
-      class="video video-js"
-    ></video> -->
     <video
       :id="`video-${index}`"
       width="320"
@@ -67,9 +60,19 @@ export default {
 
   mounted () {
     const videoEl = this.$refs.videoPlayer;
-    if (videoEl) {
+    this.player = videoEl;
+    if (this.player) {
       this.$emit('player-ready');
+      this.player.addEventListener('click', this.emitClick)
     }
   },
+  beforeDestroy () {
+    this.player.removeEventListener('click', this.emitClick);
+  },
+  methods: {
+    emitClick () {
+      this.$emit('click');
+    }
+  }
 };
 </script>

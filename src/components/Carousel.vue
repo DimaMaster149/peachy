@@ -149,7 +149,7 @@ export default {
       const prevVideoSelector = `.video-${prevIndex}`;
       const prevVideo = document.querySelector(prevVideoSelector);
 
-      if (prevVideo && !prevVideo.paused) {
+      if (prevVideo && prevVideo.play && !prevVideo.paused) {
         try {
           prevVideo.pause();
           prevVideo.currentTime = 0;
