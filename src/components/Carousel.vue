@@ -27,8 +27,9 @@
         :key="index"
       >
         <img
-          class="carousel-image"
-          :data-splide-lazy="slide.carouselId"
+          class="carousel-image__inner"
+          :src="slide.carouselId"
+          :width="width"
         >
       </splide-slide>
     </template>
@@ -149,8 +150,12 @@ export default {
       const prevVideo = document.querySelector(prevVideoSelector);
 
       if (prevVideo && !prevVideo.paused) {
-        prevVideo.pause();
-        prevVideo.currentTime = 0;
+        try {
+          prevVideo.pause();
+          prevVideo.currentTime = 0;
+        } catch (err) {
+          console.log(err)
+        }
       }
     },
   },
