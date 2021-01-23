@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <div
+      v-lazy-container="{ selector: 'img', loading: 'https://media2.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.webp?cid=ecf05e47p2m5jtqt2ul2mv6f2dmhoe717h1qa6m05u8os27p&rid=giphy.webp' }"
       ref="assets"
       class="assets"
     >

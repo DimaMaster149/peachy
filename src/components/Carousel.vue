@@ -42,9 +42,9 @@
 </template>
 
 <script>
-import { Swiper as SwiperClass, Navigation } from 'swiper/core'
+import { Swiper as SwiperClass, Navigation } from 'swiper/js/swiper.esm'
 import getAwesomeSwiper from 'vue-awesome-swiper/dist/exporter'
-import 'swiper/swiper-bundle.css';
+import 'swiper/css/swiper.css'
 
 SwiperClass.use([Navigation])
 
@@ -157,8 +157,8 @@ export default {
   },
 
   methods: {
-    slideChange (slide) {
-      const { activeIndex, previousIndex } = slide;
+    slideChange () {
+      const { activeIndex, previousIndex } = this.swiper;
       this.currentIndex = activeIndex;
       const currentVideoSelector = `.video-${activeIndex}`
       const currentVideo = document.querySelector(currentVideoSelector);

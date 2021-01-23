@@ -47,8 +47,6 @@
 <script>
 const Carousel = () => import('./Carousel.vue');
 import emitter, { SHOW_CAROUSEL } from '../eventBus';
-import '@splidejs/splide-extension-video/dist/css/splide-extension-video.min.css';
-import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 
 export default {
   name: 'carousel-container',
