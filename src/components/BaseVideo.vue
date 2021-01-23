@@ -1,15 +1,30 @@
 <template>
   <div
-    @click="$emit('click')"
     :style="{ 'width': width + 'px', 'height': height + 'px' }"
     class="video-wrapper mb-3"
   >
-
     <video
       :id="`video-${index}`"
+      width="320"
+      height="240"
+      class="video"
+      muted="true"
+      loop="false"
+      playsinline
       ref="videoPlayer"
-      class="video video-js"
-    ></video>
+    >
+      <source
+        v-if="idmp4"
+        :src="idmp4"
+        type="video/mp4"
+      >
+      <source
+        v-if="idwebm"
+        :src="idwebm"
+        type="video/webm"
+      >
+      Your browser does not support video.
+    </video>
 
   </div>
 </template>
@@ -40,40 +55,24 @@ export default {
   data () {
     return {
       player: null,
-      videoOptions: {
-        muted: true,
-        autoplay: false,
-        sources: []
-      },
     };
   },
 
-  created () {
-    if (this.idmp4) {
-      this.videoOptions.sources.push({
-        src: this.idmp4,
-        type: "video/mp4"
-      });
-    }
-
-    if (this.idwebm) {
-      this.videoOptions.sources.push({
-        src: this.idwebm,
-        type: "video/webm"
-      })
-    }
-  },
-
   mounted () {
-    const videojs = window.videojs;
-    this.player = videojs(this.$refs.videoPlayer, this.videoOptions, () => {
-      this.$emit('player-ready')
-    })
+    const videoEl = this.$refs.videoPlayer;
+    this.player = videoEl;
+    if (this.player) {
+      this.$emit('player-ready');
+      this.player.addEventListener('click', this.emitClick)
+    }
   },
   beforeDestroy () {
-    if (this.player) {
-      this.player.dispose()
-    }
+    this.player.removeEventListener('click', this.emitClick);
   },
+  methods: {
+    emitClick () {
+      this.$emit('click');
+    }
+  }
 };
 </script>

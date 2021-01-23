@@ -4,6 +4,7 @@
     :slides="medias"
     :extensions="extensions"
     @splide:visible="slideVisible"
+    ref="splide"
   >
     <template v-for="(slide, index) in medias">
       <splide-slide
@@ -12,7 +13,6 @@
         class="splide__slide--has-video"
       >
         <video
-          v-if="indexesToShow.includes(index)"
           class="video"
           muted="true"
           loop="true"
@@ -27,8 +27,9 @@
         :key="index"
       >
         <img
-          class="carousel-image"
-          :data-splide-lazy="slide.carouselId"
+          class="carousel-image__inner"
+          :src="slide.carouselId"
+          :width="width"
         >
       </splide-slide>
     </template>
@@ -58,6 +59,9 @@ export default {
     startIndex: {
       type: Number,
     },
+    toStartFirstItem: {
+      type: Boolean,
+    }
   },
 
   data () {
@@ -98,8 +102,8 @@ export default {
   computed: {
     indexesToShow () {
       const nextIndex = this.currentIndex + 2 > this.medias.length ? 0 : this.currentIndex + 1;
-      // const prevIndex = this.currentIndex - 1 < 0 ? this.medias.length - 1 : this.currentIndex - 1;
-      const indexes = [this.currentIndex, nextIndex];
+      const prevIndex = this.currentIndex - 1 < 0 ? this.medias.length - 1 : this.currentIndex - 1;
+      const indexes = [prevIndex, this.currentIndex, nextIndex];
       return indexes;
     },
   },
@@ -108,6 +112,19 @@ export default {
     startIndex (startIndex) {
       this.options.start = startIndex;
     },
+    toStartFirstItem (value) {
+      if (value) {
+        this.$refs.splide.go(this.startIndex, false);
+        if (this.type == 'video') {
+          const currentVideoSelector = `.video-${this.startIndex}`
+          const currentVideo = document.querySelector(currentVideoSelector);
+          if (currentVideo && currentVideo.play) {
+            currentVideo.play()
+          }
+        }
+        this.$emit('first-item-started');
+      }
+    }
   },
 
   created () {
@@ -124,7 +141,7 @@ export default {
       this.currentIndex = index;
       const currentVideoSelector = `.video-${index}`
       const currentVideo = document.querySelector(currentVideoSelector);
-      if (currentVideo) {
+      if (currentVideo && currentVideo.play) {
         currentVideo.play()
       }
 
@@ -132,11 +149,15 @@ export default {
       const prevVideoSelector = `.video-${prevIndex}`;
       const prevVideo = document.querySelector(prevVideoSelector);
 
-      if (prevVideo && !prevVideo.paused) {
-        prevVideo.pause();
-        prevVideo.currentTime = 0;
+      if (prevVideo && prevVideo.play && !prevVideo.paused) {
+        try {
+          prevVideo.pause();
+          prevVideo.currentTime = 0;
+        } catch (err) {
+          console.log(err)
+        }
       }
     },
-  }
+  },
 };
 </script>

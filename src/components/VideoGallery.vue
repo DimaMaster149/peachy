@@ -68,7 +68,7 @@ export default {
   methods: {
     playerReady () {
       if (this.indexesToPlay && this.indexesToPlay.length > 0) {
-        const video = document.getElementById(`video-${this.indexesToPlay[0]}_html5_api`);
+        const video = document.getElementById(`video-${this.indexesToPlay[0]}`);
         if (video) {
           video.oncanplay = () => {
             if (!this.firstVideoPlayed) {
@@ -81,9 +81,9 @@ export default {
     },
     playVideo () {
       const index = this.indexesToPlay[this.videoCount];
-      const video = document.getElementById(`video-${index}_html5_api`);
+      const video = document.getElementById(`video-${index}`);
       this.videoCount++;
-      if (video.play) {
+      if (video && video.play) {
         video.play()
 
         setTimeout(() => {
