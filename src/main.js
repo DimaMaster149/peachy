@@ -10,6 +10,7 @@ Vue.use(vueLazy, {
 	observerOptions: {
 		rootMargin: '0px',
 		threshold: 0.1
+		// loading: 'dist/loading.gif',
 	}
 });
 

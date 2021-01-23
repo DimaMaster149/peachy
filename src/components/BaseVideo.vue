@@ -21,9 +21,9 @@
       <source
         v-if="idwebm"
         :src="idwebm"
-        type="video/ogg"
+        type="video/webm"
       >
-      Your browser does not support the video tag.
+      Your browser does not support video.
     </video>
 
   </div>
