@@ -18,6 +18,8 @@
           :class="`video-${index}`"
           :src="slide.carouselIdmp4"
         ></video>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
       </swiper-slide>
 
       <swiper-slide
@@ -30,14 +32,23 @@
           :src="slide.carouselId"
           :width="width"
         >
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
       </swiper-slide>
     </template>
+
   </swiper>
 
 </template>
 
 <script>
-import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
+import { Swiper as SwiperClass, Navigation } from 'swiper/core'
+import getAwesomeSwiper from 'vue-awesome-swiper/dist/exporter'
+import 'swiper/swiper-bundle.css';
+
+SwiperClass.use([Navigation])
+
+const { Swiper, SwiperSlide } = getAwesomeSwiper(SwiperClass)
 
 export default {
   name: 'carousel',
@@ -70,7 +81,11 @@ export default {
         width: 0,
         height: 0,
         initialSlide: 0,
-        loop: false
+        loop: false,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
       },
       options: {
         type: 'slide',

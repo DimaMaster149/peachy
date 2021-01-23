@@ -1,3 +1,5 @@
+@import './swiper.css';
+
 .assets {
 	display: flex;
 	flex-wrap: wrap;
