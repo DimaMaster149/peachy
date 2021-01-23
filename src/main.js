@@ -4,7 +4,12 @@ import VideoGallery from './components/VideoGallery.vue';
 import CarouselContainer from './components/CarouselContainer.vue';
 import './assets/main.css';
 import vueLazy from 'vue-lazyload';
+import VueAwesomeSwiper from 'vue-awesome-swiper';
 
+// import style (>= Swiper 6.x)
+import 'swiper/swiper-bundle.css';
+
+Vue.use(VueAwesomeSwiper /* { default options with global component } */);
 Vue.use(vueLazy, {
 	observer: true,
 	observerOptions: {

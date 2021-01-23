@@ -1,16 +1,14 @@
 <template>
-  <splide
-    :options="options"
-    :slides="medias"
-    :extensions="extensions"
-    @splide:visible="slideVisible"
-    ref="splide"
+  <swiper
+    :ref="`swiper-${type}`"
+    :options="swiperOptions"
+    @slideChange="slideChange"
   >
     <template v-for="(slide, index) in medias">
-      <splide-slide
-        v-if="type == 'video'"
+      <swiper-slide
+        v-if="slide.carouselIdmp4"
+        :class="{'hide': type !== 'video'}"
         :key="index"
-        class="splide__slide--has-video"
       >
         <video
           class="video"
@@ -20,10 +18,11 @@
           :class="`video-${index}`"
           :src="slide.carouselIdmp4"
         ></video>
-      </splide-slide>
+      </swiper-slide>
 
-      <splide-slide
-        v-else
+      <swiper-slide
+        v-else-if="slide.carouselId"
+        :class="{'hide': type !== 'image'}"
         :key="index"
       >
         <img
@@ -31,22 +30,21 @@
           :src="slide.carouselId"
           :width="width"
         >
-      </splide-slide>
+      </swiper-slide>
     </template>
-  </splide>
+  </swiper>
 
 </template>
 
 <script>
-import { Splide, SplideSlide } from '@splidejs/vue-splide';
-// import Video from '@splidejs/splide-extension-video';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 
 export default {
   name: 'carousel',
 
   components: {
-    Splide,
-    SplideSlide,
+    Swiper,
+    SwiperSlide
   },
 
   props: {
@@ -68,6 +66,12 @@ export default {
     return {
       width: 0,
       height: 0,
+      swiperOptions: {
+        width: 0,
+        height: 0,
+        initialSlide: 0,
+        loop: false
+      },
       options: {
         type: 'slide',
         lazyLoad: 'nearby',
@@ -93,9 +97,6 @@ export default {
       },
       loadedVideos: [],
       currentIndex: 0,
-      extensions: {
-        // Video
-      }
     };
   },
 
@@ -106,15 +107,20 @@ export default {
       const indexes = [prevIndex, this.currentIndex, nextIndex];
       return indexes;
     },
+    swiper () {
+      if (this.$refs[`swiper-${this.type}`]) {
+        return this.$refs[`swiper-${this.type}`].$swiper
+      } return {}
+    }
   },
 
   watch: {
     startIndex (startIndex) {
-      this.options.start = startIndex;
+      this.swiperOptions.initialSlide = startIndex;
     },
     toStartFirstItem (value) {
       if (value) {
-        this.$refs.splide.go(this.startIndex, false);
+        this.swiper.slideTo(this.startIndex);
         if (this.type == 'video') {
           const currentVideoSelector = `.video-${this.startIndex}`
           const currentVideo = document.querySelector(currentVideoSelector);
@@ -130,23 +136,22 @@ export default {
   created () {
     this.width = window.innerWidth;
     this.height = window.innerHeight;
-    this.options.width = window.innerWidth;
-    this.options.height = window.innerHeight;
-    this.options.start = this.startIndex;
+    this.swiperOptions.width = window.innerWidth;
+    this.swiperOptions.height = window.innerHeight;
+    this.swiperOptions.start = this.initialSlide;
   },
 
   methods: {
-    slideVisible (slide) {
-      const { index } = slide
-      this.currentIndex = index;
-      const currentVideoSelector = `.video-${index}`
+    slideChange (slide) {
+      const { activeIndex, previousIndex } = slide;
+      this.currentIndex = activeIndex;
+      const currentVideoSelector = `.video-${activeIndex}`
       const currentVideo = document.querySelector(currentVideoSelector);
       if (currentVideo && currentVideo.play) {
         currentVideo.play()
       }
 
-      const prevIndex = slide.Components.Controller.prevIndex;
-      const prevVideoSelector = `.video-${prevIndex}`;
+      const prevVideoSelector = `.video-${previousIndex}`;
       const prevVideo = document.querySelector(prevVideoSelector);
 
       if (prevVideo && prevVideo.play && !prevVideo.paused) {

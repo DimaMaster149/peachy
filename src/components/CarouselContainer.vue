@@ -32,21 +32,12 @@
       </div>
 
       <carousel
-        v-show="showCarousel && type == 'video'"
-        :medias="videos"
+        v-show="showCarousel"
+        :medias="medias"
         :startIndex="startIndex"
-        type="video"
-        :toStartFirstItem="toStartFirstVideo"
-        @first-item-started="toStartFirstVideo = false"
-      />
-
-      <carousel
-        v-show="showCarousel && type == 'image'"
-        :medias="images"
-        :startIndex="startIndex"
-        type="image"
-        :toStartFirstItem="toStartFirstImage"
-        @first-item-started="toStartFirstImage = false"
+        :type="type"
+        :toStartFirstItem="toStartFirstItem"
+        @first-item-started="toStartFirstItem = false"
       />
     </div>
   </div>
@@ -72,19 +63,18 @@ export default {
       showCarousel: false,
       startIndex: 0,
       type: '',
-      toStartFirstVideo: false,
-      toStartFirstImage: false,
+      toStartFirstItem: false,
       images: [],
       videos: [],
     };
   },
 
-  // computed: {
-  //   medias () {
-  //     const medias = this.type == 'video' ? this.videos : this.images;
-  //     return medias;
-  //   }
-  // },
+  computed: {
+    medias () {
+      // const medias = this.type == 'video' ? this.videos : this.images;
+      return [...this.videos, ...this.images];
+    }
+  },
 
   created () {
     this.images = window.images;
@@ -99,16 +89,21 @@ export default {
   methods: {
     openCarousel ({ index, type }) {
       this.type = type;
-      this.startIndex = index;
+      if (type == 'video') {
+        this.startIndex = index
+      } else {
+        this.startIndex = index
+      }
 
       this.$nextTick(() => {
         this.$refs.carouselContainer.focus();
-        this.toStartFirstVideo = true;
+        this.toStartFirstItem = true;
         this.showCarousel = true;
       });
     },
     hideCarousel () {
       this.showCarousel = false;
+      this.startIndex = 0;
       this.startIndex = 0;
     },
   },
