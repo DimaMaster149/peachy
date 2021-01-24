@@ -30,31 +30,37 @@
           ></path>
         </svg>
       </div>
-
-      <carousel
-        v-show="showCarousel"
-        :medias="medias"
-        :videosLength="this.videos.length"
-        :imagesLength="this.images.length"
+      <video-carousel
+        v-show="showCarousel && type == 'video'"
+        :medias="videos"
         :startIndex="startIndex"
-        :type="type"
-        :toStartFirstItem="toStartFirstItem"
-        @first-item-started="toStartFirstItem = false"
+        :toStartFirstItem="toStartFirstVideo"
+        @first-item-started="toStartFirstVideo = false"
       />
+      <image-carousel
+        v-show="showCarousel && type == 'image'"
+        :medias="images"
+        :startIndex="startIndex"
+        :toStartFirstItem="toStartFirstImage"
+        @first-item-started="toStartFirstImage = false"
+      />
+
     </div>
   </div>
 
 </template>
 
 <script>
-const Carousel = () => import('./Carousel.vue');
+const ImageCarousel = () => import('./ImageCarousel.vue');
+const VideoCarousel = () => import('./VideoCarousel.vue');
 import emitter, { SHOW_CAROUSEL } from '../eventBus';
 
 export default {
   name: 'carousel-container',
 
   components: {
-    Carousel,
+    ImageCarousel,
+    VideoCarousel,
   },
 
   data () {
@@ -64,6 +70,8 @@ export default {
       startIndex: 0,
       type: '',
       toStartFirstItem: false,
+      toStartFirstVideo: false,
+      toStartFirstImage: false,
       images: [],
       videos: [],
     };
@@ -92,13 +100,18 @@ export default {
       if (type == 'video') {
         this.startIndex = index
       } else {
-        // this.startIndex = index
-        this.startIndex = index + this.videos.length
+        this.startIndex = index
+        // this.startIndex = index + this.videos.length
       }
 
       this.$nextTick(() => {
         this.$refs.carouselContainer.focus();
-        this.toStartFirstItem = true;
+        if (type == 'video') {
+          this.toStartFirstVideo = true;
+        } else {
+          this.toStartFirstImage = true;
+        }
+        // this.toStartFirstItem = true;
         this.showCarousel = true;
       });
     },
