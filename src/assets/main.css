@@ -1,5 +1,9 @@
 @import './swiper.css';
 
+ul {
+	padding: 0 !important;
+}
+
 .assets {
 	display: flex;
 	flex-wrap: wrap;
@@ -136,6 +140,6 @@
 	height: 48px;
 } */
 
-.slide {
+.hooper-slide-item {
 	width: 100% !important;
 }

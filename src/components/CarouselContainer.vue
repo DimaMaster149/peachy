@@ -51,8 +51,8 @@
 </template>
 
 <script>
-const ImageCarousel = () => import('./ImageCarousel.vue');
-const VideoCarousel = () => import('./VideoCarousel.vue');
+import ImageCarousel from './ImageCarousel.vue'
+import VideoCarousel from './VideoCarousel.vue'
 import emitter, { SHOW_CAROUSEL } from '../eventBus';
 
 export default {
@@ -77,12 +77,6 @@ export default {
     };
   },
 
-  computed: {
-    medias () {
-      // const medias = this.type == 'video' ? this.videos : this.images;
-      return [...this.videos, ...this.images];
-    }
-  },
 
   created () {
     this.images = window.images;

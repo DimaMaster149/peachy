@@ -10,8 +10,7 @@
     <template v-for="(slide, index) in medias">
       <slide
         :key="index"
-        :style="`width: ${width}px; height:${height}px`"
-        class="slide slide-video"
+        class="hooper-slide-item slide-video"
       >
         <video
           class="video"

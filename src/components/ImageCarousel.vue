@@ -10,7 +10,7 @@
     <template v-for="(slide, index) in medias">
       <slide
         :key="index"
-        class="slide slide-image"
+        class="hooper-slide-item slide-image"
       >
         <img
           class="carousel-image__inner"
