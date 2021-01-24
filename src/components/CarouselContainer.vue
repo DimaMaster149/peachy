@@ -34,6 +34,8 @@
       <carousel
         v-show="showCarousel"
         :medias="medias"
+        :videosLength="this.videos.length"
+        :imagesLength="this.images.length"
         :startIndex="startIndex"
         :type="type"
         :toStartFirstItem="toStartFirstItem"
@@ -90,7 +92,8 @@ export default {
       if (type == 'video') {
         this.startIndex = index
       } else {
-        this.startIndex = index
+        // this.startIndex = index
+        this.startIndex = index + this.videos.length
       }
 
       this.$nextTick(() => {
